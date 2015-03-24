@@ -57,33 +57,35 @@
                     if (opts.beforeLoad != null) {
                         opts.beforeLoad(opts, clean);
                     }
-                    $(el).children().attr("rel", "loaded");
+                    if (opts.trigger == true) {
+                        $(el).children().attr("rel", "loaded");
 
-                    $.ajax({
-                        type: "POST",
-                        dataType: "html",
-                        url: opts.contentPage,
-                        data: opts.contentData,
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
-                            opts.locked = true;
-                        },
-                        success: function (data) {
-                            opts.locked = false;
-                            if (clean) {
-                                $(el).html(data);
-                            } else {
-                                $(el).append(data);
+                        $.ajax({
+                            type: "POST",
+                            dataType: "html",
+                            url: opts.contentPage,
+                            data: opts.contentData,
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
+                                opts.locked = true;
+                            },
+                            success: function (data) {
+                                opts.locked = false;
+                                if (clean) {
+                                    $(el).html(data);
+                                } else {
+                                    $(el).append(data);
+                                }
+                                var result = $(el).children("[rel!=loaded]");
+                                if (opts.afterLoad != null) {
+                                    opts.afterLoad(opts, clean, result);
+                                }
+                            },
+                            error: function () {
+                                opts.locked = false;
                             }
-                            var result = $(el).children("[rel!=loaded]");
-                            if (opts.afterLoad != null) {
-                                opts.afterLoad(opts, clean, result);
-                            }
-                        },
-                        error: function () {
-                            opts.locked = false;
-                        }
-                    });
+                        });
+                    }
                 }
             }
         },
