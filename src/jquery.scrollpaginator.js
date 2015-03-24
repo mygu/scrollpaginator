@@ -97,6 +97,7 @@
 
     $.fn.scrollPaginator = function (options) {
         var paginator = new scrollPaginator(this, options);
-        return paginator.init();
+        paginator.init();
+        return paginator;
     };
 })(jQuery, window, document);
