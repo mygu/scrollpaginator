@@ -27,9 +27,6 @@ Example:
         "scrollTarget": $(window),
         "heightOffset": 10,
         "beforeLoad": function (opts, clean) {
-            if(clean){
-                $("#main_container").showLoading();
-            }
             $("#loading").fadeIn();
             opts.contentData = (function () {
                 var page = clean ? 1 : parseInt($("input[name='people_page_number']:last").val()) + 1;
@@ -38,9 +35,6 @@ Example:
             }());
         },
         "afterLoad": function (opts, clean, result) {
-            if(clean){
-                $("#main_container").hideLoading();
-            }
             $("#loading").fadeOut();
             $(result).fadeInWithDelay();
             if (result.length <= 0) {
