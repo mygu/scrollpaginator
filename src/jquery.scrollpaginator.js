@@ -61,12 +61,11 @@
                         $(el).children().attr("rel", "loaded");
 
                         $.ajax({
-                            type: "POST",
+                            type: "GET",
                             dataType: "html",
                             url: opts.contentPage,
                             data: opts.contentData,
                             beforeSend: function (xhr) {
-                                xhr.setRequestHeader("X-CSRFToken", $.cookie("csrftoken"));
                                 opts.locked = true;
                             },
                             success: function (data) {
